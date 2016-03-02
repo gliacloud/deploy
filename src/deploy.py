@@ -26,7 +26,7 @@ def parser_vars():
 
     env_file_pattern = os.path.join(env['ENV_BUILD_PATH'], "**")
     ## default vars
-    env["ENV_HASH"] = os.popen('shasum `find {} -type f`|shasum'.format(env_file_pattern)).read().split()[0]
+    env["ENV_HASH"] = "hash" #os.popen('shasum `find {} -type f`|shasum'.format(env_file_pattern)).read().split()[0]
     env["REPO_URL"] = os.popen('git config --get remote.origin.url').read().strip()
     env["BRANCH_NAME"] = os.popen('git symbolic-ref --short HEAD').read().strip()
 
