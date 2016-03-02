@@ -13,6 +13,7 @@ install:
 
 env:
     web=5
+    password={data}
 
 deploy:
   provider: script
