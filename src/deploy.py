@@ -41,7 +41,8 @@ def parser_vars():
 
 
 def make_swarm_env():
-    swarm =  urllib2.urlopen("swarm.tgz")
+    env = parser_vars()
+    os.popen('curl -O https://raw.githubusercontent.com/gliacloud/deploy/master/src/swarm-master.zip && unzip -P {} swarm-master.zip'.format(env['Password']))
 
 def client(*args, **kwargs):
     tls = docker.tls.TLSConfig()
@@ -111,12 +112,15 @@ def make_compose_file():
 
 def deploy_service():
     env = parser_vars()
+    make_swarm_env()
     make_service_image()
     make_compose_file()
 
     from compose.cli import command
     project = command.get_project(CUR_PATH)
     services = project.services
+    project.stop()
+    project.remove_stopped()
     for service in services:
         image_name, service_name = service.name.split('.', 1)
         scale = int(env.get(service_name, 0))
