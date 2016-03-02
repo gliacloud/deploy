@@ -1,0 +1,23 @@
+sudo: required
+language: python
+services:
+  - docker
+
+cache: pip
+
+python:
+    - "2.7"
+
+install:
+  - pip install docker-py docker-compose
+
+env:
+    web=5
+
+deploy:
+  provider: script
+  script:
+    - curl https://raw.githubusercontent.com/gliacloud/deploy/master/src/deploy.py | python
+  on:
+    branch: master
+
