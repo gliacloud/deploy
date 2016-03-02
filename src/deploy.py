@@ -30,7 +30,7 @@ def parser_vars():
     env["REPO_URL"] = os.popen('git config --get remote.origin.url').read().strip()
     env["BRANCH_NAME"] = os.popen('git symbolic-ref --short HEAD').read().strip()
 
-    repo =  re.search("[^\/]*\/[^\/]*$", env["REPO_URL"]).group().replace("/", "_").lower()
+    repo =  re.search("[^:\/]*\/[^\/]*$", env["REPO_URL"]).group().replace("/", "_").lower()
     branch = re.sub("[^a-zA-Z0-9]+", "_", env["BRANCH_NAME"]).lower()
     env_hash = env["ENV_HASH"]
 
