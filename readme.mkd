@@ -1,0 +1,30 @@
+gliacloud deploy flow
+===
+序
+---
+我們有docker swarm & haproxy, 實現我們microservice 的架構, 現在需求希望我們在ci/cd 自動整和deploy 到docker swarm 的流程
+
+
+design guidline
+---
+1. 統一deploy script, 避免各自修改
+2. 不能在local端自己deploy (這部分需要自動化, 避免人為影響)
+3. image cache, 避免image 重複build 的flow (同一個project 的env 相對來說應該不常修改, 這部分因為source code 更新反覆build 很浪費時間) 可以想成image 是src 就是container , image 就是container 的env
+4. local test env
+5. 分 test env & production env, 各自設定
+
+
+target deploy script
+---
+
+set env 
+1. dockerfile
+2. compose.template
+3. env_path
+4. work_path
+5. build_path
+6. scaling_env
+
+```
+curl -s http://deploy.py | python
+```

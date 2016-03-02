@@ -1,0 +1,109 @@
+# A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
+# https://pypi.python.org/pypi/Django/1.9.1
+Django==1.9.1
+
+
+# Django-environ allows you to utilize 12factor inspired environment variables
+# to configure your Django application.
+# http://django-environ.readthedocs.org
+django-environ==0.4.0
+
+
+# Object-oriented alternative to os/os.path/shutil
+# https://pypi.python.org/pypi/Unipath/1.1
+Unipath==1.1
+
+
+# Python HTTP for Humans.
+# https://pypi.python.org/pypi/requests/2.9.1
+requests==2.9.1
+
+
+# Python client for Redis key-value store
+# https://pypi.python.org/pypi/redis/2.10.5
+redis==2.10.5
+
+
+# Screen-scraping library
+# https://pypi.python.org/pypi/beautifulsoup4/4.4.1
+beautifulsoup4==4.4.1
+
+
+# Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API.
+# https://pypi.python.org/pypi/lxml/3.4.0
+lxml==3.4.0
+
+
+# World timezone definitions, modern and historical
+# https://pypi.python.org/pypi/pytz/2015.7
+pytz==2015.7
+
+
+# A simple Django app to import bootstrap3-sass.
+# https://pypi.python.org/pypi/django-bootstrap3-sass/3.3.2.2
+django-bootstrap3-sass==3.3.2.2
+
+
+# Compresses linked and inline JavaScript or CSS into single cached files.
+# https://pypi.python.org/pypi/django_compressor/2.0
+django_compressor==2.0
+
+
+# Pluggable search for Django.
+# https://pypi.python.org/pypi/django-haystack/2.4.0
+django-haystack==2.4.0
+
+
+# Python client for Elasticsearch
+# https://pypi.python.org/pypi/elasticsearch/1.7.0
+elasticsearch==1.7.0
+
+
+# Modern template for Django admin interface with improved functionality
+# https://pypi.python.org/pypi/django-jet/0.1.3
+django-jet==0.1.3
+
+
+# Best way to have Django DRY forms
+# https://pypi.python.org/pypi/django-crispy-forms/1.5.2
+django-crispy-forms==1.5.2
+
+
+# Reusable, generic mixins for Django
+# https://pypi.python.org/pypi/django-braces/1.8.1
+django-braces==1.8.1
+
+
+# A Python library to read/write Excel 2010 xlsx/xlsm files
+# https://pypi.python.org/pypi/openpyxl/2.3.3
+openpyxl==2.3.3
+
+
+# Extensions for Django
+# https://pypi.python.org/pypi/django-extensions/1.6.1
+django-extensions==1.6.1
+
+
+# Distributed Task Queue
+# https://pypi.python.org/pypi/celery/3.1.20
+celery==3.1.20
+
+
+# Python bindings for Selenium
+# https://pypi.python.org/pypi/selenium/2.52.0
+selenium==2.52.0
+
+
+# Simple data validation library
+# https://pypi.python.org/pypi/schema/0.4.0
+schema==0.4.0
+
+
+# Universal encoding detector for Python 2 and 3
+# https://pypi.python.org/pypi/chardet/2.3.0
+chardet==2.3.0
+
+
+# IPython: Productive Interactive Computing
+# https://pypi.python.org/pypi/ipython/4.0.3
+ipython==4.0.3
