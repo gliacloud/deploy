@@ -1,3 +1,4 @@
 web:
     ports:
         - 80
+    scale: 5

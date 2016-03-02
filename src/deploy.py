@@ -99,22 +99,27 @@ def make_compose_file():
     template = open(env['COMPOSE_TEMPLATE'])
     target = open("docker-compose.yml", 'w+')
 
+    scale_conf = {}
     service_configs = yaml.load(template.read().format(env=env))
     for service_name in service_configs.keys():
         service_configs[service_name]['image'] = service_configs[service_name].get('image', env['SERVIVE_IMAGE'])
+        service_scale = service_configs[service_name].pop('scale', 0)
         new_name = "{}.{}".format(env['SERVIVE_IMAGE'], service_name) ## make new name with service image
         service_configs[new_name] = service_configs.pop(service_name)
+
+        if service_scale:
+            scale_conf[new_name] = service_scale
 
     target.write(yaml.dump(service_configs, default_flow_style=False))
     target.close()
     template.close()
-
+    return scale_conf
 
 def deploy_service():
     env = parser_vars()
     make_swarm_env()
     make_service_image()
-    make_compose_file()
+    scale_conf = make_compose_file()
 
     from compose.cli import command
     project = command.get_project(CUR_PATH)
@@ -122,8 +127,7 @@ def deploy_service():
     project.stop()
     project.remove_stopped()
     for service in services:
-        image_name, service_name = service.name.split('.', 1)
-        scale = int(env.get(service_name, 0))
+        scale = scale_conf.get(service.name)
         if scale:
             service.scale(scale)
 

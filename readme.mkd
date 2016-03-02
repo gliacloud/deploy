@@ -25,6 +25,13 @@ set env
 5. build_path
 6. scaling_env
 
+
+deploy 主要需要有三個檔案
+1. dockerfile, 這部分就是repo 的image dockerfile, 負責產生整個 docker image的部分
+2. compose.template 設負責deploy 設定, 包含scale...etc
+3. env, 這部分目前只需要知道 Password 需要設定用於解壓縮swarm-master.zip 即可
+
+把dockerfile & compose.template 依照位置放置後, deploy script 如下
 ```
-curl -s http://deploy.py | python
+curl -s https://raw.githubusercontent.com/gliacloud/deploy/master/src/deploy.py | python
 ```
