@@ -94,6 +94,9 @@ def make_service_image():
 #        f.write(dockerfile)
 
     flow = cli.build(path=env["BUILD_PATH"], tag=env["SERVIVE_IMAGE"])
+    print env["SERVIVE_IMAGE"]
+    print cli.info()
+    print cli.images()
     for line in flow:
         print line.strip()
 
