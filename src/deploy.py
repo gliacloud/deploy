@@ -30,7 +30,7 @@ def parser_vars():
     ## default vars
     env["ENV_HASH"] = "hash" #os.popen('shasum `find {} -type f`|shasum'.format(env_file_pattern)).read().split()[0]
     env["REPO_URL"] = os.popen('git config --get remote.origin.url').read().strip()
-    env["BRANCH_NAME"] = os.popen('git symbolic-ref --short HEAD').read().strip()
+    env["BRANCH_NAME"] = env.get('TRAVIS_BRANCH', os.popen('git symbolic-ref --short HEAD').read().strip())
 
     repo =  re.search("[^:\/]*\/[^\/]*$", env["REPO_URL"]).group().replace("/", "_").replace('.git', '').lower()
     branch = re.sub("[^a-zA-Z0-9]+", "_", env["BRANCH_NAME"]).lower()
