@@ -10,6 +10,7 @@ import os
 import tempfile
 import yaml
 from compose.cli import docker_client as compose_docker
+import pprint
 
 CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -38,6 +39,8 @@ def parser_vars():
     env["COMPOSE_TEMPLATE"] = env.get("COMPOSE_TEMPLATE", "env/compose.template")
     env["SERVIVE_IMAGE"] = "{}_srv_{}".format(repo, branch)
     env["ENV_IMAGE"] = "{}_env_{}".format(repo, env_hash)
+
+    pprint.pprint(env)
     return env
 
 
