@@ -93,6 +93,7 @@ def make_service_image():
 #    with open(os.path.join(env['BUILD_PATH'], "Dockerfile"), 'w+') as f:
 #        f.write(dockerfile)
 
+    cli.remove_image(image=env["SERVIVE_IMAGE"], force=True)
     flow = cli.build(path=env["BUILD_PATH"], tag=env["SERVIVE_IMAGE"])
     print env["SERVIVE_IMAGE"]
     print cli.info()
