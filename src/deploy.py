@@ -126,6 +126,7 @@ def deploy_service():
     make_swarm_env()
     make_service_image()
     scale_conf = make_compose_file()
+    print os.popen("cd swarm-master && source activite && cd .. && docker info").read()
 
     from compose.cli import command
     project = command.get_project(CUR_PATH)
