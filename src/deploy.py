@@ -40,7 +40,6 @@ def parser_vars():
     env["SERVIVE_IMAGE"] = "{}_srv_{}".format(repo, branch)
     env["ENV_IMAGE"] = "{}_env_{}".format(repo, env_hash)
 
-    pprint.pprint(env)
     return env
 
 
