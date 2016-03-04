@@ -108,7 +108,7 @@ def make_compose_file():
     scale_conf = {}
     service_configs = yaml.load(template.read().format(env=env))
     for service_name in service_configs.keys():
-        service_configs[service_name]['image'] = service_configs[service_name].get('image', env['SERVIVE_IMAGE'])
+        service_configs[service_name]['build'] = "."
         service_scale = service_configs[service_name].pop('scale', 0)
         new_name = "{}.{}".format(env['SERVIVE_IMAGE'], service_name) ## make new name with service image
         service_configs[new_name] = service_configs.pop(service_name)
@@ -124,7 +124,6 @@ def make_compose_file():
 def deploy_service():
     env = parser_vars()
     make_swarm_env()
-    make_service_image()
     scale_conf = make_compose_file()
     print os.popen("cd swarm-master && source activite && cd .. && docker info").read()
 
