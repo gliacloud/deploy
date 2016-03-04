@@ -36,7 +36,7 @@ def parser_vars():
     branch = re.sub("[^a-zA-Z0-9]+", "_", env["BRANCH_NAME"]).lower()
     env_hash = env["ENV_HASH"]
 
-    env["COMPOSE_TEMPLATE"] = env.get("COMPOSE_TEMPLATE", "env/compose.template")
+    env["COMPOSE_TEMPLATE"] = env.get("COMPOSE_TEMPLATE", "compose.template")
     env["SERVIVE_IMAGE"] = "{}_srv_{}".format(repo, branch)
     env["ENV_IMAGE"] = "{}_env_{}".format(repo, env_hash)
 
