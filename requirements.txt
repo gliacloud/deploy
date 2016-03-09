@@ -1,0 +1,14 @@
+# Python client for Docker.
+# https://pypi.python.org/pypi/docker-py/1.7.2
+docker-py==1.7.2
+
+
+# Multi-container orchestration for Docker
+# https://pypi.python.org/pypi/docker-compose/1.6.2
+docker-compose==1.6.2
+
+
+# Python Git Library
+# https://pypi.python.org/pypi/GitPython/1.0.2
+GitPython==1.0.2
+
