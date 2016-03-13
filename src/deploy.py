@@ -8,16 +8,21 @@ import os
 import yaml
 import docker
 from compose.cli import docker_client as compose_docker
+import re
 
 env = os.environ
 tag = env.get('TAG', 'default')
 repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip()
 repo = os.popen('git config --get remote.origin.url').read().strip()
+repo = re.search("[^@\/:]*\/[^\/]*$", repo).group()
 if os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
 
 password = env['Password']
 basename = "{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'])
+
+github_user = env.get('GITHUB_USER', '')
+github_token = env.get('GITHUB_TOKEN', '')
 
 print os.popen('curl -O https://raw.githubusercontent.com/gliacloud/deploy/master/src/swarm-master.zip && unzip -P {} swarm-master.zip'.format(password)).read()
 
@@ -50,14 +55,15 @@ scale_conf = {}
 
 for service_name, config in configs.items():
     config['image'] = config.get('image', env['IMAGE_NAME'])
-    config['command'] = config.get('command', 'curl -s run.sh|bash')
+    config['command'] = config.get('command', 'run.sh')
 
     name = "{}.{}".format(basename, service_name)
     compose_config[name] = config
     compose_env = compose_config.get('environment', [])
-    compose_env.append("Password={}".format(password))
-    compose_env.append("REPO={}".format(repo))
-    compose_env.append("REPO_BRANCH={}".format(repo_branch))
+    compose_env.append("GITHUB_REPO={}".format(repo))
+    compose_env.append("GITHUB_REPO_BRANCH={}".format(repo_branch))
+    compose_env.append("GITHUB_USER={}".format(github_user))
+    compose_env.append("GITHUB_TOKEN={}".format(github_token))
     config['environment'] = compose_env
     scale_conf[name] = config.pop('scale', 0)
 

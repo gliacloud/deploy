@@ -6,8 +6,6 @@
 # source build.sh deploy 
 #
 
-cmd=$1
-
 export BRANCH_NAME=`git symbolic-ref --short HEAD`
 export REPO_NAME=`git config --get remote.origin.url|sed "s/^.*:\/\///" | sed "s/.*://" | sed "s/.git$//" | sed "s/[^a-zA-Z0-9]/_/"| tr '[A-Z]' '[a-z]'`
 export IMAGE_HASH=$(shasum `find image/* -type f` | shasum | awk '{print $1}')
@@ -21,8 +19,9 @@ then
         echo "start build $IMAGE_NAME"
         docker build -t $IMAGE_NAME image
         
-        if [[ $cmd == 'deploy'  ]]
+        if [[ $DOCKERHUB_USER != ''  ]]
         then
+            docker login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASSWORD
             docker push $IMAGE_NAME
         fi
     fi
