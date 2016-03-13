@@ -38,8 +38,8 @@ def client(*args, **kwargs):
 
 compose_docker.docker_client = client
 
-compose_file = open('deploy/{}.compose'.format(tag))
-source = compose_file.format(env=env).read()
+compose_file = open('deploy/{}.compose'.format(tag)).read()
+source = compose_file.format(env=env)
 configs = yaml.loads(source)
 
 compose_config = {}
