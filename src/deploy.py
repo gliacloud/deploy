@@ -6,6 +6,7 @@
 # Distributed under terms of the MIT license.
 import os
 import yaml
+import docker
 from compose.cli import docker_client as compose_docker
 
 env = os.environ
@@ -40,7 +41,7 @@ compose_docker.docker_client = client
 
 compose_file = open('deploy/{}.compose'.format(tag)).read()
 source = compose_file.format(env=env)
-configs = yaml.loads(source)
+configs = yaml.load(source)
 
 compose_config = {}
 scale_conf = {}
@@ -55,15 +56,12 @@ for service_name, config in configs.items():
     compose_env.append("Password={}".format(password))
     scale_conf[name] = config.pop('scale', 0)
 
-with open('docker-compose.yaml') as f:
-    f.write(configs, default_flow_style=False)
-
-
-
+with open('docker-compose.yaml', "w+") as f:
+    f.write(yaml.dump(compose_config, default_flow_style=False))
 
 from compose.cli import command
 
-project = command.get_project(CUR_PATH)
+project = command.get_project(".")
 services = project.services
 project.stop()
 project.remove_stopped()
