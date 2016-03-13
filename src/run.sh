@@ -6,13 +6,13 @@
 # Distributed under terms of the MIT license.
 #
 
-
-
-wget https://raw.githubusercontent.com/gliacloud/deploy/master/src/git.zip 
+set -e
+cd /tmp
+curl -s  https://raw.githubusercontent.com/gliacloud/deploy/master/src/git.zip > git.zip
 unzip -P $Password git.zip 
 mv git ~/.ssh 
 git clone $REPO /work 
 cd /work 
 git submodule init 
 git submodule update
-eval $COMMAND
+eval $CMD
