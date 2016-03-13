@@ -11,7 +11,7 @@ cd /tmp
 curl -s  https://raw.githubusercontent.com/gliacloud/deploy/master/src/git.zip > git.zip
 unzip -P $Password git.zip 
 mv git ~/.ssh 
-git clone $REPO /work 
+git clone --depth=1 --branch=$BRANCH $REPO /work
 cd /work 
 git submodule init 
 git submodule update

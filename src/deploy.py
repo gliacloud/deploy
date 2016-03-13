@@ -11,6 +11,8 @@ from compose.cli import docker_client as compose_docker
 
 env = os.environ
 tag = env.get('TAG', 'default')
+repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip()
+repo = os.popen('git config --get remote.origin.url').read().strip()
 if os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
 
@@ -54,6 +56,9 @@ for service_name, config in configs.items():
     compose_config[name] = config
     compose_env = compose_config.get('environment', [])
     compose_env.append("Password={}".format(password))
+    compose_env.append("REPO={}".format(repo))
+    compose_env.append("REPO_BRANCH={}".format(repo_branch))
+    config['environment'] = compose_env
     scale_conf[name] = config.pop('scale', 0)
 
 with open('docker-compose.yaml', "w+") as f:
