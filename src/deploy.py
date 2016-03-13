@@ -10,7 +10,7 @@ from compose.cli import docker_client as compose_docker
 
 env = os.environ
 tag = env.get('TAG', 'default')
-if os.path.exists('{}.compose'.format(tag)):
+if os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
 
 password = env['Password']
@@ -38,7 +38,7 @@ def client(*args, **kwargs):
 
 compose_docker.docker_client = client
 
-compose_file = open('{}.compose'.format(tag))
+compose_file = open('deploy/{}.compose'.format(tag))
 source = compose_file.format(env=env).read()
 configs = yaml.loads(source)
 
