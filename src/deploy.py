@@ -8,7 +8,7 @@ import os
 import yaml
 from compose.cli import docker_client as compose_docker
 
-env = os.environ()
+env = os.environ
 tag = env.get('TAG', 'default')
 if os.path.exists('{}.compose'.format(tag)):
     tag = 'default'
