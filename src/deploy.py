@@ -70,6 +70,8 @@ for service_name, config in configs.items():
 with open('docker-compose.yaml', "w+") as f:
     f.write(yaml.dump(compose_config, default_flow_style=False))
 
+print yaml.dump(compose_config)
+
 from compose.cli import command
 
 project = command.get_project(".")
