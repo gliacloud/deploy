@@ -12,7 +12,7 @@ import re
 
 env = os.environ
 tag = env.get('TAG', 'default')
-repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip()
+repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip() or env.get('TRAVIS_BRANCH', "master")
 repo = os.popen('git config --get remote.origin.url').read().strip()
 repo = re.search("[^@\/:]*\/[^\/]*$", repo).group()
 if os.path.exists('deploy/{}.compose'.format(tag)):
@@ -70,7 +70,6 @@ for service_name, config in configs.items():
 with open('docker-compose.yaml', "w+") as f:
     f.write(yaml.dump(compose_config, default_flow_style=False))
 
-print yaml.dump(compose_config)
 
 from compose.cli import command
 
