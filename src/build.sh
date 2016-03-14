@@ -21,7 +21,7 @@ then
         
         if [[ $DOCKERHUB_USER != ''  ]]
         then
-            docker login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASSWORD
+            docker login --username=$DOCKERHUB_USER --password=$DOCKERHUB_PASSWORD --email=$DOCKERHUB_EMAIL
             docker push $IMAGE_NAME
         fi
     fi
