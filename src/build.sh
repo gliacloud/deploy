@@ -6,8 +6,13 @@
 # source build.sh deploy 
 #
 
-git symbolic-ref --short HEAD
-export BRANCH_NAME=`git symbolic-ref --short HEAD`
+if [ -z $TRAVIS_BRANCH ]; 
+then
+    export BRANCH_NAME=`git symbolic-ref --short HEAD`
+else
+    export BRANCH_NAME=$TRAVIS_BRANCH
+fi
+
 export REPO_NAME=`git config --get remote.origin.url|sed "s/^https:\/\/github.com\///" | sed "s/git@github.com://" | sed "s/.git$//" | sed "s/[^a-zA-Z0-9]/_/g"| tr '[A-Z]' '[a-z]'`
 export IMAGE_HASH=$(shasum `find image/* -type f` | shasum | awk '{print $1}')
 export IMAGE_NAME=gliacloud/$REPO_NAME:$IMAGE_HASH
