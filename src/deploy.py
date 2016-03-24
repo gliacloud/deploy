@@ -15,7 +15,7 @@ tag = env.get('TAG', 'default')
 repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip() or env.get('TRAVIS_BRANCH', "master")
 repo = os.popen('git config --get remote.origin.url').read().strip()
 repo = re.search("[^@\/:]*\/[^\/]*$", repo).group()
-if os.path.exists('deploy/{}.compose'.format(tag)):
+if not os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
 
 password = env['Password']
@@ -45,7 +45,6 @@ def client(*args, **kwargs):
     return cli
 
 compose_docker.docker_client = client
-
 compose_file = open('deploy/{}.compose'.format(tag)).read()
 source = compose_file.format(env=env)
 configs = yaml.load(source)
