@@ -27,12 +27,12 @@ github_token = env.get('GITHUB_TOKEN', '')
 
 
 logging = {}
-logging['driver'] = 'syslog'
-logging['options'] = {}
-logging['options']['syslog-address'] = "tcp://logging.gliacloud.com:1234"
-logging['options']['syslog-facility'] = "deamon"
-logging['options']['syslog-tls-skip-verify'] = "true"
-logging['options']['tag'] = basename
+
+logging['log_driver'] = 'syslog'
+logging['log_opt'] = {}
+logging['log_opt']['syslog-address'] = "tcp://logging.gliacloud.com:1234"
+logging['log_opt']['syslog-tls-skip-verify'] = "true"
+logging['log_opt']['tag'] = basename
 
 
 print os.popen('curl -O https://raw.githubusercontent.com/gliacloud/deploy/master/src/swarm-master.zip && unzip -P {} swarm-master.zip'.format(password)).read()
@@ -66,7 +66,7 @@ scale_conf = {}
 for service_name, config in configs.items():
     config['image'] = config.get('image', env['IMAGE_NAME'])
     config['command'] = config.get('command', 'run.sh')
-    config['logging'] = logging
+    config.update(logging)
 
     name = "{}.{}".format(basename, service_name)
     compose_config[name] = config
