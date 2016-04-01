@@ -31,7 +31,6 @@ logging = {}
 logging['log_driver'] = 'syslog'
 logging['log_opt'] = {}
 logging['log_opt']['syslog-address'] = "tcp://logging.gliacloud.com:1234"
-logging['log_opt']['syslog-tls-skip-verify'] = "true"
 logging['log_opt']['tag'] = basename
 
 
