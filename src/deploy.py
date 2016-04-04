@@ -14,6 +14,7 @@ env = os.environ
 tag = env.get('TAG', 'default')
 repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip() or env.get('TRAVIS_BRANCH', "master")
 repo = os.popen('git config --get remote.origin.url').read().strip()
+commit = os.popen('git log -n 1 --pretty=format:"%h"').read().strip()
 repo = re.search("[^@\/:]*\/[^\/]*$", repo).group()
 if not os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
@@ -31,7 +32,6 @@ logging = {}
 logging['log_driver'] = 'syslog'
 logging['log_opt'] = {}
 logging['log_opt']['syslog-address'] = "tcp://logging.gliacloud.com:1234"
-logging['log_opt']['tag'] = basename
 
 
 print os.popen('curl -O https://raw.githubusercontent.com/gliacloud/deploy/master/src/swarm-master.zip && unzip -P {} swarm-master.zip'.format(password)).read()
@@ -68,6 +68,7 @@ for service_name, config in configs.items():
     config.update(logging)
 
     name = "{}.{}".format(basename, service_name)
+    logging['log_opt']['tag'] = "{}/{}/{}".format(name, commit,"{{.ID}}")
     compose_config[name] = config
     compose_env = config.get('environment', [])
     compose_env.append("GITHUB_REPO={}".format(repo))
