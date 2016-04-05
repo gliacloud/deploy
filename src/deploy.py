@@ -9,6 +9,7 @@ import yaml
 import docker
 from compose.cli import docker_client as compose_docker
 import re
+import copy
 
 env = os.environ
 tag = env.get('TAG', 'default')
@@ -21,6 +22,7 @@ if not os.path.exists('deploy/{}.compose'.format(tag)):
 
 password = env['Password']
 basename = "{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'])
+import pdb;pdb.set_trace()
 
 github_user = env.get('GITHUB_USER', '')
 github_token = env.get('GITHUB_TOKEN', '')
@@ -65,10 +67,11 @@ scale_conf = {}
 for service_name, config in configs.items():
     config['image'] = config.get('image', env['IMAGE_NAME'])
     config['command'] = config.get('command', 'run.sh')
-    config.update(logging)
+    logging_conf = copy.deepcopy(logging)
 
     name = "{}.{}".format(basename, service_name)
-    logging['log_opt']['tag'] = "{}/{}/{}".format(name, commit,"{{.ID}}")
+    logging_conf['log_opt']['tag'] = "{}/{}/{}".format(name, commit,"{{.ID}}")
+    config.update(logging_conf)
     compose_config[name] = config
     compose_env = config.get('environment', [])
     compose_env.append("GITHUB_REPO={}".format(repo))
