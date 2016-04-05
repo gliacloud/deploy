@@ -22,7 +22,6 @@ if not os.path.exists('deploy/{}.compose'.format(tag)):
 
 password = env['Password']
 basename = "{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'])
-import pdb;pdb.set_trace()
 
 github_user = env.get('GITHUB_USER', '')
 github_token = env.get('GITHUB_TOKEN', '')
