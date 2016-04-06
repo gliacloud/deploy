@@ -10,6 +10,8 @@ import docker
 from compose.cli import docker_client as compose_docker
 import re
 import copy
+import json
+import requests
 
 env = os.environ
 tag = env.get('TAG', 'default')
@@ -46,13 +48,13 @@ def client(*args, **kwargs):
 
     cli = docker.client.Client(base_url=base_url, tls=tls)
 
-#    ## local cli
-#    from docker import utils
-#    
-#    kwargs = utils.kwargs_from_env()
-#    tls = kwargs['tls']
-#    tls.assert_hostname = False
-#    cli = docker.client.Client(**kwargs)
+    ## local cli
+    from docker import utils
+    
+    kwargs = utils.kwargs_from_env()
+    tls = kwargs['tls']
+    tls.assert_hostname = False
+    cli = docker.client.Client(**kwargs)
     return cli
 
 compose_docker.docker_client = client
@@ -62,6 +64,7 @@ configs = yaml.load(source)
 
 compose_config = {}
 scale_conf = {}
+hostname_conf = {}
 
 for service_name, config in configs.items():
     config['image'] = config.get('image', env['IMAGE_NAME'])
@@ -79,6 +82,9 @@ for service_name, config in configs.items():
     compose_env.append("GITHUB_TOKEN={}".format(github_token))
     config['environment'] = compose_env
     scale_conf[name] = config.pop('scale', 0)
+    hostname = config.get('hostname', None)
+    if hostname:
+        hostname_conf[service_name] = "http://" + hostname.strip()
 
 with open('docker-compose.yaml', "w+") as f:
     f.write(yaml.dump(compose_config, default_flow_style=False))
@@ -95,3 +101,17 @@ for service in services:
     if scale:
         service.scale(scale)
 
+
+
+if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
+    api = "https://{}:{}@api.github.com/repos/{}/issues/{}/comments".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
+    content = "\n".join(["{}| {}".format(key, value) for key, value in hostname_conf.items()])
+    content = """
+    deploy success
+
+    service | url
+    ---|---
+    {}
+    """.format(content)
+
+    resp = requests.post(api, json.dumps({"body": content}))
