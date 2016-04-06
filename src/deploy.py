@@ -49,12 +49,12 @@ def client(*args, **kwargs):
     cli = docker.client.Client(base_url=base_url, tls=tls)
 
     ## local cli
-    from docker import utils
-    
-    kwargs = utils.kwargs_from_env()
-    tls = kwargs['tls']
-    tls.assert_hostname = False
-    cli = docker.client.Client(**kwargs)
+#    from docker import utils
+#    
+#    kwargs = utils.kwargs_from_env()
+#    tls = kwargs['tls']
+#    tls.assert_hostname = False
+#    cli = docker.client.Client(**kwargs)
     return cli
 
 compose_docker.docker_client = client
