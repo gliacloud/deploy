@@ -46,7 +46,7 @@ def client(*args, **kwargs):
     tls.assert_hostname = False
     base_url = "https://174.36.110.94:3376"
 
-    cli = docker.client.Client(base_url=base_url, tls=tls, version="1.2.1")
+    cli = docker.client.Client(base_url=base_url, tls=tls, version="1.21")
 
     ## local cli
 #    from docker import utils
