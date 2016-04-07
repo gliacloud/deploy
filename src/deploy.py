@@ -31,7 +31,7 @@ github_token = env.get('GITHUB_TOKEN', '')
 if env.get('TRAVIS_PULL_REQUEST', None):
     pull_request = env['TRAVIS_PULL_REQUEST']
     api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
-    repo_branch = requests.get(api).json()['head']['label']
+    repo_branch = requests.get(api).json()['head']['label'].split(":")[1]
     print repo_branch
 
     basename = "{}_{}".format(env['REPO_NAME'], pull_request)
