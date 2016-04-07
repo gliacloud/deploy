@@ -23,7 +23,10 @@ if not os.path.exists('deploy/{}.compose'.format(tag)):
     tag = 'default'
 
 password = env['Password']
-basename = "{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'])
+if env.get('TRAVIS_PULL_REQUEST', None):
+    basename = "{}_{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'], env['TRAVIS_PULL_REQUEST'])
+else:
+    basename = "{}_{}".format(env['REPO_NAME'], env['BRANCH_NAME'])
 
 github_user = env.get('GITHUB_USER', '')
 github_token = env.get('GITHUB_TOKEN', '')
