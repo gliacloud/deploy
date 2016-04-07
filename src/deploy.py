@@ -106,7 +106,7 @@ for service in services:
         service.scale(scale)
 
 
-
+print hostname_conf
 #if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
 #    api = "https://{}:{}@api.github.com/repos/{}/issues/{}/comments".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
 #    content = "\n".join(["{}| {}".format(key, value) for key, value in hostname_conf.items()])
