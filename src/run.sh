@@ -7,6 +7,7 @@
 #
 
 set -e
+rm -rf /work
 git clone https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPO --branch=$GITHUB_REPO_BRANCH --depth=1 /work
 cd /work 
 git submodule init 
