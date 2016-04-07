@@ -103,15 +103,15 @@ for service in services:
 
 
 
-if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
-    api = "https://{}:{}@api.github.com/repos/{}/issues/{}/comments".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
-    content = "\n".join(["{}| {}".format(key, value) for key, value in hostname_conf.items()])
-    content = """
-    deploy success
-
-    service | url
-    ---|---
-    {}
-    """.format(content)
-
-    resp = requests.post(api, json.dumps({"body": content}))
+#if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
+#    api = "https://{}:{}@api.github.com/repos/{}/issues/{}/comments".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
+#    content = "\n".join(["{}| {}".format(key, value) for key, value in hostname_conf.items()])
+#    content = """
+#    deploy success
+#
+#    service | url
+#    ---|---
+#    {}
+#    """.format(content)
+#
+#    resp = requests.post(api, json.dumps({"body": content}))
