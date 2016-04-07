@@ -75,6 +75,7 @@ for service_name, config in configs.items():
     logging_conf = copy.deepcopy(logging)
 
     name = "{}.{}".format(basename, service_name)
+    print name
     logging_conf['log_opt']['tag'] = "{}/{}/{}".format(name, commit,"{{.ID}}")
     config.update(logging_conf)
     compose_config[name] = config
