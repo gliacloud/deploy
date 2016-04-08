@@ -139,11 +139,12 @@ if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false
     api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(
         github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
     
+    logging_url = "http://kibana.test.gliacloud.com/app/kibana#/dashboard/sample-dashboard?_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-4h,mode:quick,to:now))&_a=(filters:!(),options:(darkTheme:!f),panels:!((col:1,id:log-%E5%88%86%E4%BD%88,panelIndex:1,row:1,size_x:6,size_y:4,type:visualization),(col:7,id:%E9%87%8F-slash-t,panelIndex:2,row:1,size_x:6,size_y:4,type:visualization),(col:1,columns:!(service,commit,tag,container,msg),id:quick-view,panelIndex:4,row:5,size_x:12,size_y:4,sort:!('@timestamp',desc),type:search)),query:(query_string:(analyze_wildcard:!t,query:'service:{}*')),title:'sample%20dashboard',uiState:(P-1:(spy:(mode:(fill:!f,name:!n))),P-2:(spy:(mode:(fill:!f,name:!n)),vis:(legendOpen:!f))))".format(basename)
     origin_body = requests.get(api).json()['body']
     print origin_body
     origin_body = origin_body.split('@deploy information')[0].strip()
 
-    content = "\n".join(["{}| {}".format(key, value)
+    content = "\n".join(["{0}| [{1}]({1})".format(key, value)
                          for key, value in hostname_conf.items()])
 
     content = """
@@ -154,8 +155,9 @@ if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false
 
 name | url
 ---|---
+****logging****| [logging url]{}
 {}
-    """.format(origin_body, content)
+    """.format(logging_url, origin_body, content)
 
     print api
     print content
