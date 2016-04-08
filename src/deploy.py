@@ -156,4 +156,4 @@ service | url
 {}
     """.format(origin_body, content)
 
-    print requests.patch(api, {"body", content}).json()
+    print requests.patch(api, data={"body", content}).content
