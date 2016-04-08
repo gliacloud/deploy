@@ -141,7 +141,7 @@ if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
     
     origin_body = requests.get(api).json()['body']
     print origin_body
-    origin_body = origin_body.split('deploy information')[0].strip()
+    origin_body = origin_body.split('@deploy information')[0].strip()
 
     content = "\n".join(["{}| {}".format(key, value)
                          for key, value in hostname_conf.items()])
@@ -149,10 +149,10 @@ if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
     content = """
 {}
 
-deploy information
+@deploy information
 ===
 
-service | url
+name | url
 ---|---
 {}
     """.format(origin_body, content)
