@@ -159,4 +159,4 @@ service | url
 
     print api
     print content
-    print requests.patch(api, data=json.dumps({"body", content})).content
+    print requests.patch(api, data=json.dumps({"body": content})).content
