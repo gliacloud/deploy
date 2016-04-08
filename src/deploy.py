@@ -139,7 +139,7 @@ if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
     api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(
         github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
 
-    origin_body = requests.get(api)['body']
+    origin_body = requests.get(api).json()['body']
     origin_body = origin_body.split('deploy information')[0].strip()
 
     content = "\n".join(["{}| {}".format(key, value)
