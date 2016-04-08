@@ -135,7 +135,7 @@ if merge_pull_request:
 
 
 # travis get pull request condition
-if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
+if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false' and hostname_conf:
     api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(
         github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
     
