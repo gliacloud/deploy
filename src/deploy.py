@@ -28,7 +28,7 @@ github_user = env.get('GITHUB_USER', '')
 github_token = env.get('GITHUB_TOKEN', '')
 
 
-if env.get('TRAVIS_PULL_REQUEST', None) and not env['TRAVIS_PULL_REQUEST'] != 'false':
+if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false':
     pull_request = env['TRAVIS_PULL_REQUEST']
     print pull_request
     api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
