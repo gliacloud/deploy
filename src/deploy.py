@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2016 lizongzhe 
+# Copyright © 2016 lizongzhe
 #
 # Distributed under terms of the MIT license.
 import os
@@ -15,7 +15,8 @@ import requests
 
 env = os.environ
 tag = env.get('TAG', 'default')
-repo_branch = os.popen('git symbolic-ref --short HEAD').read().strip() or env.get('TRAVIS_BRANCH', "master")
+repo_branch = os.popen(
+    'git symbolic-ref --short HEAD').read().strip() or env.get('TRAVIS_BRANCH', "master")
 repo = os.popen('git config --get remote.origin.url').read().strip()
 commit = os.popen('git log -n 1 --pretty=format:"%h"').read().strip()
 repo = re.search("[^@\/:]*\/[^\/]*$", repo).group()
@@ -31,7 +32,8 @@ github_token = env.get('GITHUB_TOKEN', '')
 if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false':
     pull_request = env['TRAVIS_PULL_REQUEST']
     print pull_request
-    api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
+    api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(
+        github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
     pull_info = requests.get(api).json()
     print pull_info
     repo_branch = pull_info['head']['label'].split(":")[1]
@@ -50,6 +52,7 @@ logging['log_opt']['syslog-address'] = "tcp://logging.gliacloud.com:1234"
 
 print os.popen('curl -O https://raw.githubusercontent.com/gliacloud/deploy/master/src/swarm-master.zip && unzip -P {} swarm-master.zip'.format(password)).read()
 
+
 def client(*args, **kwargs):
     tls = docker.tls.TLSConfig()
     tls.verify = "swarm-master/ca.pem"
@@ -59,9 +62,9 @@ def client(*args, **kwargs):
 
     cli = docker.client.Client(base_url=base_url, tls=tls, version="1.21")
 
-    ## local cli
+    # local cli
 #    from docker import utils
-#    
+#
 #    kwargs = utils.kwargs_from_env()
 #    tls = kwargs['tls']
 #    tls.assert_hostname = False
@@ -84,7 +87,7 @@ for service_name, config in configs.items():
 
     name = "{}.{}".format(basename, service_name)
     print name
-    logging_conf['log_opt']['tag'] = "{}/{}/{}".format(name, commit,"{{.ID}}")
+    logging_conf['log_opt']['tag'] = "{}/{}/{}".format(name, commit, "{{.ID}}")
     config.update(logging_conf)
     compose_config[name] = config
     compose_env = config.get('environment', [])
@@ -115,17 +118,43 @@ for service in services:
 
 
 print hostname_conf
-print  os.popen('git branch').read()
-print  os.popen('git log -n 10').read()
-#if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
-#    api = "https://{}:{}@api.github.com/repos/{}/issues/{}/comments".format(github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
-#    content = "\n".join(["{}| {}".format(key, value) for key, value in hostname_conf.items()])
-#    content = """
-#    deploy success
-#
-#    service | url
-#    ---|---
-#    {}
-#    """.format(content)
-#
-#    resp = requests.post(api, json.dumps({"body": content}))
+print os.popen('git branch').read()
+merge_pull_request = os.popen(
+    'git log -n 1|grep "Merge pull request"').read().strip()
+
+# master merge pull request condition
+if merge_pull_request:
+    merge_pull_request = merge_pull_request.match(
+        "Merge pull request #(\d+)", merge_pull_request).group()
+    container_name = "{}_{}".format(env['REPO_NAME'], merge_pull_request)
+    cli = client()
+    containers = cli.containers(filters={"name": container_name}, all=True)
+
+    for container in containers:
+        cli.remove_container(force=True, container=container['names'][0])
+
+
+# travis get pull request condition
+if env.get('TRAVIS_PULL_REQUEST', None) and hostname_conf:
+    api = "https://{}:{}@api.github.com/repos/{}/pulls/{}".format(
+        github_user, github_token, re.sub(".git$", "", repo), env['TRAVIS_PULL_REQUEST'])
+    api = "https://api.github.com/repos/{}/statuses/{}".format(repo, sha)
+
+    origin_body = requests.get(api)['body']
+    origin_body = origin_body.split('deploy information')[0].strip()
+
+    content = "\n".join(["{}| {}".format(key, value)
+                         for key, value in hostname_conf.items()])
+
+    content = """
+{}
+
+deploy information
+===
+
+service | url
+---|---
+{}
+    """.format(origin_body, content)
+
+    request.patch(api, {"body", content})
