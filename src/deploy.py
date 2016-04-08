@@ -124,7 +124,7 @@ merge_pull_request = os.popen(
 
 # master merge pull request condition
 if merge_pull_request:
-    merge_pull_request = merge_pull_request.match(
+    merge_pull_request = re.match(
         "Merge pull request #(\d+)", merge_pull_request).group()
     container_name = "{}_{}".format(env['REPO_NAME'], merge_pull_request)
     cli = client()
