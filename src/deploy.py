@@ -153,12 +153,13 @@ if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false
 
 @deploy information
 ===
+{}
 
 name | url
 ---|---
 ****logging****| [logging url]({})
 {}
-    """.format(logging_url, origin_body, content)
+    """.format(origin_body, logging_url,  content)
 
     print api
     print content
