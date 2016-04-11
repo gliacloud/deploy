@@ -109,12 +109,14 @@ from compose.cli import command
 
 project = command.get_project(".")
 services = project.services
-project.stop()
-project.remove_stopped()
 for service in services:
     scale = scale_conf.get(service.name)
     if scale:
-        service.scale(scale)
+        old_containers = service.containers(service.name)
+        service.scale(scale + len(old_containers))
+        for old_container in old_containers:
+            old_container.stop()
+            old_container.remove()
 
 
 print hostname_conf
