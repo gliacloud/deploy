@@ -150,7 +150,7 @@ if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false
                          for key, value in hostname_conf.items()])
 
     content = """
-{}
+[log]({})
 
 @deploy information
 ===
