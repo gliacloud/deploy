@@ -149,7 +149,7 @@ if env.get('TRAVIS_PULL_REQUEST', None) and env['TRAVIS_PULL_REQUEST'] != 'false
     content = "\n".join(["{0}| [{1}]({1})".format(key, value)
                          for key, value in hostname_conf.items()])
 
-    content = """
+    content = u"""
 
 @deploy information
 ===
